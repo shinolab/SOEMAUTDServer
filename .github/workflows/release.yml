@@ -1,0 +1,71 @@
+name: Release
+
+on:
+  push:
+    tags:
+    - 'v*'
+
+jobs:
+  release:
+    name: create-github-release
+    runs-on: ubuntu-latest
+    steps:
+    - id: create_release
+      uses: ncipollo/release-action@v1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        draft: false
+        prerelease: false
+    - run: |
+        echo "${{ steps.create_release.outputs.upload_url }}" > release_url.txt
+    - uses: actions/upload-artifact@v4
+      with:
+        name: release_url
+        path: release_url.txt
+
+  publish:
+    name: publish-${{ matrix.os }}
+    needs: [release]
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            name: win
+            arch: x64
+          - os: macos-latest
+            name: macos
+            arch: aarch64
+          - os: ubuntu-latest
+            name: linux
+            arch: x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-build
+        with:
+          os: ${{ matrix.os }}
+      - id: get_version
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          result-encoding: string
+          script: |
+            return 'SOEMAUTDServer-'+context.payload.ref.replace(/refs\/tags\//, '')+'-${{ matrix.name }}-${{ matrix.arch }}';
+      - run: cargo make build
+      - uses: actions/download-artifact@v4
+        with:
+          name: release_url
+      - id: get_release_info
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: release_url.txt
+      - uses: shogo82148/actions-upload-release-asset@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          upload_url: ${{ steps.get_release_info.outputs.content }}
+          asset_path: ./target/release/SOEMAUTDServer${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+          asset_name: ${{ steps.get_version.outputs.result }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+          asset_content_type: 'application/octet-stream'
