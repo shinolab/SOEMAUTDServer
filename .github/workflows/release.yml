@@ -54,7 +54,14 @@ jobs:
           result-encoding: string
           script: |
             return 'SOEMAUTDServer-'+context.payload.ref.replace(/refs\/tags\//, '')+'-${{ matrix.name }}-${{ matrix.arch }}';
+      - run: cargo make build-unity      
       - run: cargo make build
+      - run: Compress-Archive -Path ./target/release/SOEMAUTDServer.exe, LICENSE, ThirdPartyNotice.txt -DestinationPath assets.zip
+        if: ${{ matrix.os == 'windows-latest' }}
+      - run: |
+          cp ./target/release/SOEMAUTDServer SOEMAUTDServer
+          tar -zcvf assets.tar.gz SOEMAUTDServer LICENSE ThirdPartyNotice.txt
+        if: ${{ matrix.os != 'windows-latest'}}
       - uses: actions/download-artifact@v4
         with:
           name: release_url
@@ -66,6 +73,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           upload_url: ${{ steps.get_release_info.outputs.content }}
-          asset_path: ./target/release/SOEMAUTDServer${{ matrix.os == 'windows-latest' && '.exe' || '' }}
-          asset_name: ${{ steps.get_version.outputs.result }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+          asset_path: assets.${{ matrix.os == 'windows-latest' && 'zip' || 'tar.gz' }}
+          asset_name: ${{ steps.get_version.outputs.result }}.${{ matrix.os == 'windows-latest' && 'zip' || 'tar.gz' }}
           asset_content_type: 'application/octet-stream'
