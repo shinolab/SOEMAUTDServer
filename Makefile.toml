@@ -1,0 +1,29 @@
+[config]
+default_to_workspace = false
+skip_core_tasks = true
+
+[tasks.check]
+dependencies = ["format", "build", "lint", "license"]
+
+[tasks.format]
+ignore_errors = true
+command = "cargo"
+args = ["fmt"]
+
+[tasks.lint]
+command = "cargo"
+args = ["clippy", "${@}", "--", "-D", "warnings"]
+
+[tasks.build]
+command = "cargo"
+args = ["build", "--release", "${@}"]
+
+[tasks.update]
+command = "cargo"
+args = ["update"]
+
+[tasks.license]
+cwd = "./tools/license-checker"
+command = "cargo"
+args = ["run"]
+dependencies = ["update"]

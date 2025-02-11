@@ -1,0 +1,17 @@
+name: 'build tools setup action'
+inputs:
+  os:
+    description: 'os'
+    required: true
+    default: ''
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Rust
+      uses: actions-rust-lang/setup-rust-toolchain@v1
+      with:
+        toolchain: 'stable'
+    - name: Setup cargo-make
+      uses: taiki-e/install-action@v2
+      with:
+        tool: cargo-make
