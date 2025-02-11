@@ -54,7 +54,6 @@ jobs:
           result-encoding: string
           script: |
             return 'SOEMAUTDServer-'+context.payload.ref.replace(/refs\/tags\//, '')+'-${{ matrix.name }}-${{ matrix.arch }}';
-      - run: cargo make build-unity      
       - run: cargo make build
       - run: Compress-Archive -Path ./target/release/SOEMAUTDServer.exe, LICENSE, ThirdPartyNotice.txt -DestinationPath assets.zip
         if: ${{ matrix.os == 'windows-latest' }}
