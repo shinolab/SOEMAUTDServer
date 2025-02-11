@@ -6,7 +6,7 @@ edition = "2021"
 license = "MIT"
 
 description = "AUTDServer"
-repository = "https://github.com/shinolab/autd3-server"
+repository = "https://github.com/shinolab/SOEMAUTDServer"
 readme = "README.md"
 keywords = ["autd"]
 
