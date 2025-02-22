@@ -5,6 +5,9 @@ skip_core_tasks = true
 [tasks.check]
 dependencies = ["format", "build", "lint", "license"]
 
+[tasks.ci]
+dependencies = ["format", "build", "lint"]
+
 [tasks.format]
 ignore_errors = true
 command = "cargo"
