@@ -8,16 +8,16 @@ use log_formatter::LogFormatter;
 
 use autd3_core::link::Link;
 use autd3_driver::firmware::cpu::TxMessage;
-use autd3_link_soem::{SOEMOption, TimerStrategy, SOEM};
+use autd3_link_soem::{SOEM, SOEMOption, TimerStrategy};
 use autd3_protobuf::*;
 
 use clap::{Args, Parser, Subcommand, ValueEnum};
 
 use tokio::{
     runtime::Runtime,
-    sync::{mpsc, RwLock},
+    sync::{RwLock, mpsc},
 };
-use tonic::{transport::Server, Request, Response, Status};
+use tonic::{Request, Response, Status, transport::Server};
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
 enum TimerStrategyArg {
@@ -92,16 +92,19 @@ impl<F: Fn(usize, autd3_link_soem::Status) + Send + Sync + 'static> ecat_server:
         &self,
         request: Request<TxRawData>,
     ) -> Result<Response<SendResponse>, Status> {
-        let tx = Vec::<TxMessage>::from_msg(&request.into_inner())?;
-        Ok(Response::new(SendResponse {
-            success: Link::send(&mut *self.soem.write().await, &tx).unwrap_or(false),
-        }))
+        let tx = Vec::<TxMessage>::from_msg(request.into_inner())?;
+        match Link::send(&mut *self.soem.write().await, &tx) {
+            Ok(_) => Ok(Response::new(SendResponse {})),
+            Err(_) => Err(Status::internal("Failed to send data")),
+        }
     }
 
     async fn read_data(&self, _: Request<ReadRequest>) -> Result<Response<RxMessage>, Status> {
         let mut rx = vec![autd3_driver::firmware::cpu::RxMessage::new(0, 0); self.num_dev];
-        Link::receive(&mut *self.soem.write().await, &mut rx).unwrap_or(false);
-        Ok(Response::new(rx.to_msg(None)?))
+        match Link::receive(&mut *self.soem.write().await, &mut rx) {
+            Ok(_) => Ok(Response::new(rx.to_msg(None)?)),
+            Err(_) => return Err(Status::internal("Failed to read data")),
+        }
     }
 
     async fn close(&self, _: Request<CloseRequest>) -> Result<Response<CloseResponse>, Status> {
@@ -109,8 +112,8 @@ impl<F: Fn(usize, autd3_link_soem::Status) + Send + Sync + 'static> ecat_server:
             .write()
             .await
             .clear_iomap()
-            .map_err(|_| Status::invalid_argument("Failed to clear data"))?;
-        Ok(Response::new(CloseResponse { success: true }))
+            .map_err(|_| Status::internal("Failed to clear data"))?;
+        Ok(Response::new(CloseResponse {}))
     }
 }
 
@@ -201,9 +204,7 @@ async fn main_() -> anyhow::Result<()> {
                     option,
                 );
                 soem.open(&autd3_driver::geometry::Geometry::new(vec![]))?;
-                let num_dev = SOEM::<
-                    Box<dyn Fn(usize, autd3_link_soem::Status) + Send + Sync + 'static>,
-                >::num_devices();
+                let num_dev = soem.num_devices();
 
                 tracing::info!("{} AUTDs found", num_dev);
 
