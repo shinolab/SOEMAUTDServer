@@ -102,7 +102,7 @@ impl<F: Fn(usize, autd3_link_soem::Status) + Send + Sync + 'static> ecat_server:
     async fn read_data(&self, _: Request<ReadRequest>) -> Result<Response<RxMessage>, Status> {
         let mut rx = vec![autd3_driver::firmware::cpu::RxMessage::new(0, 0); self.num_dev];
         match Link::receive(&mut *self.soem.write().await, &mut rx) {
-            Ok(_) => Ok(Response::new(rx.to_msg(None)?)),
+            Ok(_) => Ok(Response::new(rx.into())),
             Err(_) => return Err(Status::internal("Failed to read data")),
         }
     }
