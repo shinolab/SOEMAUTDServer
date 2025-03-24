@@ -7,7 +7,7 @@ name = "SOEMAUTDServer"
 version = "31.0.1"
 dependencies = [
  "anyhow",
- "autd3-core",
+ "autd3-core 32.0.0",
  "autd3-driver",
  "autd3-link-soem",
  "autd3-protobuf",
@@ -161,7 +161,7 @@ version = "31.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "efd74da694c33f5bbe0d23ecc47abd1fb673f0ebe981acb5362cdd50979e319b"
 dependencies = [
- "autd3-core",
+ "autd3-core 31.0.1",
  "autd3-derive",
  "autd3-driver",
  "autd3-firmware-emulator",
@@ -201,6 +201,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "autd3-core"
+version = "32.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "789b2d65cb1a71bc2aff3ad8ee7fae3ec1bec9221c8fcd5a4d368e00d80ee0d2"
+
+[[package]]
 name = "autd3-derive"
 version = "31.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -216,7 +222,7 @@ version = "31.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c0d6afe68a8c0ca8fa3de731b028327160dc4481922bbb40b2d11ea923ce60b9"
 dependencies = [
- "autd3-core",
+ "autd3-core 31.0.1",
  "autd3-derive",
  "bitfield-struct",
  "bitflags",
@@ -251,7 +257,7 @@ version = "31.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "720fcee3f330b287ea46a2c81fb7ed4b6b0f07676f44ff6d087c3eb69b8feadc"
 dependencies = [
- "autd3-core",
+ "autd3-core 31.0.1",
  "derive_more",
  "nalgebra",
  "rand 0.9.0",
@@ -268,7 +274,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "caee2217c43ae5602dd73007e3c43a1bf7806d68a98c80a7e77e1717e1f88d87"
 dependencies = [
  "anyhow",
- "autd3-core",
+ "autd3-core 31.0.1",
  "autd3-protobuf",
  "cc",
  "crossbeam-channel",
@@ -292,7 +298,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7bed3c1ca63d8c3b063e5521772c0447d2c807ff8f05c822b2f51c3cecf7d8c5"
 dependencies = [
  "autd3",
- "autd3-core",
+ "autd3-core 31.0.1",
  "autd3-driver",
  "autd3-gain-holo",
  "derive_more",
