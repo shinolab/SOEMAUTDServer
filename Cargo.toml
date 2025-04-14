@@ -17,7 +17,7 @@ autd3-protobuf = { version = "32.0.1", features = ["lightweight", "async-trait"]
 autd3-link-soem = { version = "32.0.1", features = ["async", "async-trait"] }
 autd3-driver = { version = "32.0.1" }
 autd3-core = { version = "32.0.1" }
-anyhow = "1.0.97"
+anyhow = "1.0.98"
 ctrlc = "3.4.6"
 tonic = "0.13.0"
 tracing = "0.1.41"
