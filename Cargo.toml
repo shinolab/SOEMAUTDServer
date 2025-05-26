@@ -1,6 +1,6 @@
 [package]
 name = "SOEMAUTDServer"
-version = "32.1.1"
+version = "33.0.0"
 authors = ["shun suzuki <suzuki@hapis.k.u-tokyo.ac.jp>"]
 edition = "2024"
 license = "MIT"
@@ -13,10 +13,10 @@ keywords = ["autd"]
 [dependencies]
 clap = { version = "4.5.38", features = ["derive"] }
 tokio = { version = "1.45.0", features = ["macros", "rt-multi-thread"] }
-autd3-protobuf = { version = "32.1.1", features = ["lightweight", "async-trait"] }
-autd3-link-soem = { version = "32.1.1", features = ["async", "async-trait"] }
-autd3-driver = { version = "32.1.1" }
-autd3-core = { version = "32.1.1" }
+autd3-protobuf = { version = "33.0.0", features = ["lightweight", "async-trait"] }
+autd3-link-soem = { version = "33.0.0", features = ["async", "async-trait"] }
+autd3-driver = { version = "33.0.0" }
+autd3-core = { version = "33.0.0" }
 anyhow = "1.0.98"
 ctrlc = "3.4.7"
 tonic = "0.13.1"
