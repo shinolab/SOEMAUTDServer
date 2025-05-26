@@ -93,7 +93,7 @@ impl<F: Fn(usize, autd3_link_soem::Status) + Send + Sync + 'static> ecat_server:
         request: Request<TxRawData>,
     ) -> Result<Response<SendResponse>, Status> {
         let tx = Vec::<TxMessage>::from_msg(request.into_inner())?;
-        match Link::send(&mut *self.soem.write().await, &tx) {
+        match Link::send(&mut *self.soem.write().await, tx) {
             Ok(_) => Ok(Response::new(SendResponse {})),
             Err(_) => Err(Status::internal("Failed to send data")),
         }
