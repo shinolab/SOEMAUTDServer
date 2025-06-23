@@ -2,13 +2,14 @@
 
 mod log_formatter;
 
+use std::net::SocketAddr;
 use std::num::{NonZeroU64, NonZeroUsize};
 
 use log_formatter::LogFormatter;
 
-use autd3_core::link::Link;
-use autd3_driver::firmware::cpu::TxMessage;
-use autd3_link_soem::{SOEM, SOEMOption, TimerStrategy};
+use autd3_core::link::{Ack, Link, TxMessage};
+use autd3_core::sleep::{Sleep, SpinSleeper, SpinWaitSleeper, StdSleeper};
+use autd3_link_soem::{SOEM, SOEMOption};
 use autd3_protobuf::*;
 
 use clap::{Args, Parser, Subcommand, ValueEnum};
@@ -57,7 +58,7 @@ struct Arg {
     #[clap(short = 'b', long = "buffer_size", default_value = "32")]
     buf_size: NonZeroUsize,
     /// Timer strategy
-    #[clap(short = 't', long = "timer", default_value = "spin-sleep")]
+    #[clap(short = 't', long = "sleeper", default_value = "spin-sleep")]
     timer_strategy: TimerStrategyArg,
     /// State check interval in ms
     #[clap(short = 'e', long = "state_check_interval", default_value = "100")]
@@ -68,8 +69,6 @@ struct Arg {
     /// Sync timeout in s
     #[clap(short = 'o', long = "sync_timeout", default_value = "10")]
     sync_timeout: u64,
-    #[clap(short = 'l', long = "lightweight", default_value = "false")]
-    lightweight: bool,
 }
 
 #[derive(Subcommand)]
@@ -79,14 +78,19 @@ enum Commands {
     List,
 }
 
-struct SOEMServer<F: Fn(usize, autd3_link_soem::Status) + Send + Sync + 'static> {
+struct SOEMServer<
+    F: Fn(usize, autd3_link_soem::Status) + Send + Sync + 'static,
+    S: Sleep + Send + Sync + 'static,
+> {
     num_dev: usize,
-    soem: RwLock<SOEM<F>>,
+    soem: RwLock<SOEM<F, S>>,
 }
 
 #[tonic::async_trait]
-impl<F: Fn(usize, autd3_link_soem::Status) + Send + Sync + 'static> ecat_server::Ecat
-    for SOEMServer<F>
+impl<
+    F: Fn(usize, autd3_link_soem::Status) + Send + Sync + 'static,
+    S: Sleep + Send + Sync + 'static,
+> ecat_server::Ecat for SOEMServer<F, S>
 {
     async fn send_data(
         &self,
@@ -100,7 +104,7 @@ impl<F: Fn(usize, autd3_link_soem::Status) + Send + Sync + 'static> ecat_server:
     }
 
     async fn read_data(&self, _: Request<ReadRequest>) -> Result<Response<RxMessage>, Status> {
-        let mut rx = vec![autd3_driver::firmware::cpu::RxMessage::new(0, 0); self.num_dev];
+        let mut rx = vec![autd3_core::link::RxMessage::new(0, Ack::new()); self.num_dev];
         match Link::receive(&mut *self.soem.write().await, &mut rx) {
             Ok(_) => Ok(Response::new(rx.into())),
             Err(_) => return Err(Status::internal("Failed to read data")),
@@ -115,6 +119,40 @@ impl<F: Fn(usize, autd3_link_soem::Status) + Send + Sync + 'static> ecat_server:
             .map_err(|_| Status::internal("Failed to clear data"))?;
         Ok(Response::new(CloseResponse {}))
     }
+}
+
+async fn run<S: Sleep + Send + Sync + 'static>(
+    addr: SocketAddr,
+    mut rx: mpsc::Receiver<()>,
+    option: SOEMOption,
+    sleeper: S,
+) -> anyhow::Result<()> {
+    let mut soem = autd3_link_soem::SOEM::with_sleeper(
+        |slave, status| {
+            tracing::error!("slave [{}]: {}", slave, status);
+            if status == autd3_link_soem::Status::Lost {
+                std::process::exit(-1);
+            }
+        },
+        option,
+        sleeper,
+    );
+    soem.open(&autd3_core::geometry::Geometry::new(vec![]))?;
+    let num_dev = soem.num_devices();
+
+    tracing::info!("{} AUTDs found", num_dev);
+
+    Server::builder()
+        .add_service(ecat_server::EcatServer::new(SOEMServer {
+            num_dev,
+            soem: RwLock::new(soem),
+        }))
+        .serve_with_shutdown(addr, async {
+            let _ = rx.recv().await;
+        })
+        .await?;
+
+    Ok(())
 }
 
 async fn main_() -> anyhow::Result<()> {
@@ -142,11 +180,6 @@ async fn main_() -> anyhow::Result<()> {
                 let state_check_interval = args.state_check_interval;
                 let sync_tolerance = std::time::Duration::from_micros(args.sync_tolerance);
                 let sync_timeout = std::time::Duration::from_secs(args.sync_timeout);
-                let timer_strategy = match args.timer_strategy {
-                    TimerStrategyArg::StdSleep => TimerStrategy::StdSleep,
-                    TimerStrategyArg::SpinSleep => TimerStrategy::SpinSleep,
-                    TimerStrategyArg::SpinWait => TimerStrategy::SpinWait,
-                };
                 let buf_size = args.buf_size;
                 SOEMOption {
                     buf_size,
@@ -158,12 +191,11 @@ async fn main_() -> anyhow::Result<()> {
                     ),
                     sync_tolerance,
                     sync_timeout,
-                    timer_strategy,
                     ..Default::default()
                 }
             };
 
-            let (tx, mut rx) = mpsc::channel(1);
+            let (tx, rx) = mpsc::channel(1);
             ctrlc::set_handler(move || {
                 let rt = Runtime::new().expect("failed to obtain a new Runtime object");
                 rt.block_on(tx.send(())).unwrap();
@@ -173,50 +205,14 @@ async fn main_() -> anyhow::Result<()> {
             let addr = format!("0.0.0.0:{}", port).parse()?;
             tracing::info!("Waiting for client connection on {}", addr);
 
-            if args.lightweight {
-                let server = autd3_protobuf::lightweight::LightweightServer::new(move || {
-                    Ok(autd3_link_soem::SOEM::new(
-                        |slave, status| {
-                            tracing::error!("slave [{}]: {}", slave, status);
-                            if status == autd3_link_soem::Status::Lost {
-                                std::process::exit(-1);
-                            }
-                        },
-                        option.clone(),
-                    ))
-                });
-                Server::builder()
-                    .add_service(ecat_light_server::EcatLightServer::new(server))
-                    .serve_with_shutdown(addr, async {
-                        let _ = rx.recv().await;
-                    })
-                    .await?;
-            } else {
-                tracing::info!("Starting SOEM server...");
+            tracing::info!("Starting SOEM server...");
 
-                let mut soem = autd3_link_soem::SOEM::new(
-                    |slave, status| {
-                        tracing::error!("slave [{}]: {}", slave, status);
-                        if status == autd3_link_soem::Status::Lost {
-                            std::process::exit(-1);
-                        }
-                    },
-                    option,
-                );
-                soem.open(&autd3_driver::geometry::Geometry::new(vec![]))?;
-                let num_dev = soem.num_devices();
-
-                tracing::info!("{} AUTDs found", num_dev);
-
-                Server::builder()
-                    .add_service(ecat_server::EcatServer::new(SOEMServer {
-                        num_dev,
-                        soem: RwLock::new(soem),
-                    }))
-                    .serve_with_shutdown(addr, async {
-                        let _ = rx.recv().await;
-                    })
-                    .await?;
+            match args.timer_strategy {
+                TimerStrategyArg::StdSleep => run(addr, rx, option, StdSleeper).await?,
+                TimerStrategyArg::SpinSleep => {
+                    run(addr, rx, option, SpinSleeper::default()).await?
+                }
+                TimerStrategyArg::SpinWait => run(addr, rx, option, SpinWaitSleeper).await?,
             }
         }
     }
