@@ -6,7 +6,7 @@ The license terms for each of these components are provided later in this notice
 
 ---------------------------------------------------------
 
-SOEMAUTDServer 34.0.0 (MIT)
+SOEMAUTDServer 35.0.0 (MIT)
 https://github.com/shinolab/SOEMAUTDServer
 ---------------------------------------------------------
 
@@ -62,63 +62,27 @@ atomic-waker 1.1.2 (Apache-2.0 OR MIT)
 https://github.com/smol-rs/atomic-waker
 ---------------------------------------------------------
 
-autd3 34.0.0 (MIT)
+autd3 35.0.0 (MIT)
 https://github.com/shinolab/autd3-rs
 ---------------------------------------------------------
 
-autd3-core 31.0.1 (MIT)
+autd3-core 35.0.0 (MIT)
 https://github.com/shinolab/autd3-rs
 ---------------------------------------------------------
 
-autd3-core 33.0.0 (MIT)
+autd3-derive 35.0.0 (MIT)
 https://github.com/shinolab/autd3-rs
 ---------------------------------------------------------
 
-autd3-core 34.0.0 (MIT)
+autd3-driver 35.0.0 (MIT)
 https://github.com/shinolab/autd3-rs
 ---------------------------------------------------------
 
-autd3-derive 31.0.1 (MIT)
-https://github.com/shinolab/autd3-rs
----------------------------------------------------------
-
-autd3-derive 33.0.0 (MIT)
-https://github.com/shinolab/autd3-rs
----------------------------------------------------------
-
-autd3-derive 34.0.0 (MIT)
-https://github.com/shinolab/autd3-rs
----------------------------------------------------------
-
-autd3-driver 31.0.1 (MIT)
-https://github.com/shinolab/autd3-rs
----------------------------------------------------------
-
-autd3-driver 33.0.0 (MIT)
-https://github.com/shinolab/autd3-rs
----------------------------------------------------------
-
-autd3-driver 34.0.0 (MIT)
-https://github.com/shinolab/autd3-rs
----------------------------------------------------------
-
-autd3-firmware-emulator 31.0.1 (MIT)
-https://github.com/shinolab/autd3-rs
----------------------------------------------------------
-
-autd3-firmware-emulator 33.0.0 (MIT)
-https://github.com/shinolab/autd3-rs
----------------------------------------------------------
-
-autd3-firmware-emulator 34.0.0 (MIT)
-https://github.com/shinolab/autd3-rs
----------------------------------------------------------
-
-autd3-link-soem 34.0.0 (MIT)
+autd3-link-soem 35.0.0 (MIT)
 https://github.com/shinolab/autd3-link-soem
 ---------------------------------------------------------
 
-autd3-protobuf 34.0.0 (MIT)
+autd3-protobuf 35.0.0 (MIT)
 https://github.com/shinolab/autd3-rs
 ---------------------------------------------------------
 
@@ -142,10 +106,6 @@ bit-vec 0.8.0 (Apache-2.0 OR MIT)
 https://github.com/contain-rs/bit-vec
 ---------------------------------------------------------
 
-bitfield-struct 0.10.1 (MIT)
-https://github.com/wrenger/bitfield-struct-rs.git
----------------------------------------------------------
-
 bitfield-struct 0.11.0 (MIT)
 https://github.com/wrenger/bitfield-struct-rs.git
 ---------------------------------------------------------
@@ -154,7 +114,7 @@ bitflags 2.9.1 (Apache-2.0 OR MIT)
 https://github.com/bitflags/bitflags
 ---------------------------------------------------------
 
-bumpalo 3.18.1 (Apache-2.0 OR MIT)
+bumpalo 3.19.0 (Apache-2.0 OR MIT)
 https://github.com/fitzgen/bumpalo
 ---------------------------------------------------------
 
@@ -198,12 +158,12 @@ colorchoice 1.0.4 (Apache-2.0 OR MIT)
 https://github.com/rust-cli/anstyle.git
 ---------------------------------------------------------
 
-const_fn 0.4.11 (Apache-2.0 OR MIT)
-https://github.com/taiki-e/const_fn
----------------------------------------------------------
-
 core-foundation-sys 0.8.7 (Apache-2.0 OR MIT)
 https://github.com/servo/core-foundation-rs
+---------------------------------------------------------
+
+core_affinity 0.8.3 (Apache-2.0 OR MIT)
+https://github.com/Elzair/core_affinity_rs
 ---------------------------------------------------------
 
 crossbeam-channel 0.5.15 (Apache-2.0 OR MIT)
@@ -338,7 +298,7 @@ iana-time-zone-haiku 0.1.2 (Apache-2.0 OR MIT)
 https://github.com/strawlab/iana-time-zone
 ---------------------------------------------------------
 
-indexmap 2.9.0 (Apache-2.0 OR MIT)
+indexmap 2.10.0 (Apache-2.0 OR MIT)
 https://github.com/indexmap-rs/indexmap
 ---------------------------------------------------------
 
@@ -770,15 +730,7 @@ winapi-x86_64-pc-windows-gnu 0.4.0 (Apache-2.0 OR MIT)
 https://github.com/retep998/winapi-rs
 ---------------------------------------------------------
 
-windows 0.60.0 (Apache-2.0 OR MIT)
-https://github.com/microsoft/windows-rs
----------------------------------------------------------
-
 windows 0.61.3 (Apache-2.0 OR MIT)
-https://github.com/microsoft/windows-rs
----------------------------------------------------------
-
-windows-collections 0.1.1 (Apache-2.0 OR MIT)
 https://github.com/microsoft/windows-rs
 ---------------------------------------------------------
 
@@ -786,23 +738,11 @@ windows-collections 0.2.0 (Apache-2.0 OR MIT)
 https://github.com/microsoft/windows-rs
 ---------------------------------------------------------
 
-windows-core 0.60.1 (Apache-2.0 OR MIT)
-https://github.com/microsoft/windows-rs
----------------------------------------------------------
-
 windows-core 0.61.2 (Apache-2.0 OR MIT)
 https://github.com/microsoft/windows-rs
 ---------------------------------------------------------
 
-windows-future 0.1.1 (Apache-2.0 OR MIT)
-https://github.com/microsoft/windows-rs
----------------------------------------------------------
-
 windows-future 0.2.1 (Apache-2.0 OR MIT)
-https://github.com/microsoft/windows-rs
----------------------------------------------------------
-
-windows-implement 0.59.0 (Apache-2.0 OR MIT)
 https://github.com/microsoft/windows-rs
 ---------------------------------------------------------
 
@@ -818,19 +758,11 @@ windows-link 0.1.3 (Apache-2.0 OR MIT)
 https://github.com/microsoft/windows-rs
 ---------------------------------------------------------
 
-windows-numerics 0.1.1 (Apache-2.0 OR MIT)
-https://github.com/microsoft/windows-rs
----------------------------------------------------------
-
 windows-numerics 0.2.0 (Apache-2.0 OR MIT)
 https://github.com/microsoft/windows-rs
 ---------------------------------------------------------
 
 windows-result 0.3.4 (Apache-2.0 OR MIT)
-https://github.com/microsoft/windows-rs
----------------------------------------------------------
-
-windows-strings 0.3.1 (Apache-2.0 OR MIT)
 https://github.com/microsoft/windows-rs
 ---------------------------------------------------------
 

@@ -69,6 +69,9 @@ struct Arg {
     /// Sync timeout in s
     #[clap(short = 'o', long = "sync_timeout", default_value = "10")]
     sync_timeout: u64,
+    /// CPU affinity
+    #[clap(short = 'a', long = "affinity")]
+    affinity: Option<usize>,
 }
 
 #[derive(Subcommand)]
@@ -181,6 +184,7 @@ async fn main_() -> anyhow::Result<()> {
                 let sync_tolerance = std::time::Duration::from_micros(args.sync_tolerance);
                 let sync_timeout = std::time::Duration::from_secs(args.sync_timeout);
                 let buf_size = args.buf_size;
+                let affinity = args.affinity.map(|id| core_affinity::CoreId { id });
                 SOEMOption {
                     buf_size,
                     ifname: ifname.clone(),
@@ -191,6 +195,7 @@ async fn main_() -> anyhow::Result<()> {
                     ),
                     sync_tolerance,
                     sync_timeout,
+                    affinity,
                     ..Default::default()
                 }
             };
@@ -202,7 +207,7 @@ async fn main_() -> anyhow::Result<()> {
             })
             .expect("Error setting Ctrl-C handler");
 
-            let addr = format!("0.0.0.0:{}", port).parse()?;
+            let addr = format!("0.0.0.0:{port}").parse()?;
             tracing::info!("Waiting for client connection on {}", addr);
 
             tracing::info!("Starting SOEM server...");

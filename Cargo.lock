@@ -4,14 +4,15 @@ version = 4
 
 [[package]]
 name = "SOEMAUTDServer"
-version = "34.0.0"
+version = "35.0.0"
 dependencies = [
  "anyhow",
- "autd3-core 34.0.0",
+ "autd3-core",
  "autd3-link-soem",
  "autd3-protobuf",
  "chrono",
  "clap",
+ "core_affinity",
  "ctrlc",
  "tokio",
  "tonic",
@@ -134,77 +135,28 @@ checksum = "1505bd5d3d116872e7271a6d4e16d81d0c8570876c8de68093a09ac269d8aac0"
 
 [[package]]
 name = "autd3"
-version = "34.0.0"
+version = "35.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "89d56e217fbe00c32f2698ae569185229bbfe1ae2fb677ce1e7ca1fbef51851d"
+checksum = "6f670bfa7ea81d3e1f773bfb155736c29cdf7d35a8d7bed891218bae6f1cef7c"
 dependencies = [
- "autd3-core 34.0.0",
- "autd3-driver 34.0.0",
- "autd3-firmware-emulator 31.0.1",
- "autd3-firmware-emulator 33.0.0",
- "autd3-firmware-emulator 34.0.0",
- "bit-vec",
+ "autd3-core",
+ "autd3-driver",
  "derive_more",
  "getset",
- "itertools",
- "num",
  "smallvec",
  "tokio",
- "zerocopy",
 ]
 
 [[package]]
 name = "autd3-core"
-version = "31.0.1"
+version = "35.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "08aa535ffdd79f982d904a0cb5a249f439a7a4de85bf1a51798786f8abf6b83c"
-dependencies = [
- "autd3-derive 31.0.1",
- "bit-vec",
- "bvh",
- "const_fn",
- "derive_more",
- "getset",
- "nalgebra",
- "paste",
- "thiserror",
- "time",
- "tracing",
- "windows 0.60.0",
- "zerocopy",
-]
-
-[[package]]
-name = "autd3-core"
-version = "33.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e47f5b7d6bf912bbdb0b913d7e6347054e8127a99a4ed5fe7b1fb4f74b11e6cc"
-dependencies = [
- "autd3-derive 33.0.0",
- "bit-vec",
- "bvh",
- "derive_more",
- "getset",
- "nalgebra",
- "paste",
- "thiserror",
- "time",
- "tracing",
- "tynm",
- "windows 0.61.3",
- "zerocopy",
-]
-
-[[package]]
-name = "autd3-core"
-version = "34.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "27a1821b0eb127d9a771a7e567dfa88c7bfe12c765571b52d83e52a7c5a93c5c"
+checksum = "278bdf1ea4ee92d436f0d42aab5bf7c3365ea9754102432eedc17db340067d63"
 dependencies = [
  "async-trait",
- "autd3-derive 34.0.0",
+ "autd3-derive",
  "bit-vec",
- "bitfield-struct 0.11.0",
+ "bitfield-struct",
  "bvh",
  "derive_more",
  "getset",
@@ -223,29 +175,9 @@ dependencies = [
 
 [[package]]
 name = "autd3-derive"
-version = "31.0.1"
+version = "35.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4364f9b9dba5cad95921055b5b7ff2eb9a110fbe91db67c08f6b7614410ad266"
-dependencies = [
- "quote",
- "syn",
-]
-
-[[package]]
-name = "autd3-derive"
-version = "33.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "300bcfedf985582fa034c465a978ea99714e571728c840e76dca43ae7c5df313"
-dependencies = [
- "quote",
- "syn",
-]
-
-[[package]]
-name = "autd3-derive"
-version = "34.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f0a7b0bcd26aacdf6dc5b647116493d5225e0d54d7158c3bbc83140101f5a2c2"
+checksum = "58dbbbc29ec0f3dac82da6f0fbe9a6b9f793c612bcb1a5d8f079421982caaedd"
 dependencies = [
  "quote",
  "syn",
@@ -253,59 +185,13 @@ dependencies = [
 
 [[package]]
 name = "autd3-driver"
-version = "31.0.1"
+version = "35.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c0d6afe68a8c0ca8fa3de731b028327160dc4481922bbb40b2d11ea923ce60b9"
+checksum = "ca9d2d720198c6fad1b793f4a30c848b5ebabfcbc6d9f864aa1f7d22fa9c4dad"
 dependencies = [
- "autd3-core 31.0.1",
- "autd3-derive 31.0.1",
- "bitfield-struct 0.10.1",
- "bitflags",
- "derive_more",
- "getset",
- "itertools",
- "nalgebra",
- "rayon",
- "seq-macro",
- "thiserror",
- "time",
- "tracing",
- "zerocopy",
-]
-
-[[package]]
-name = "autd3-driver"
-version = "33.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "45e66ae704bd2c04ddd813329550d6b3d75460635b53633c539e1a39cf83a54d"
-dependencies = [
- "autd3-core 33.0.0",
- "autd3-derive 33.0.0",
- "bitfield-struct 0.11.0",
- "bitflags",
- "derive_more",
- "getset",
- "itertools",
- "nalgebra",
- "num",
- "rayon",
- "seq-macro",
- "thiserror",
- "time",
- "tracing",
- "tynm",
- "zerocopy",
-]
-
-[[package]]
-name = "autd3-driver"
-version = "34.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0bbcc0e422071beee38b66b0ee30f5878764564d13f6788874280adb7796bc1b"
-dependencies = [
- "autd3-core 34.0.0",
- "autd3-derive 34.0.0",
- "bitfield-struct 0.11.0",
+ "autd3-core",
+ "autd3-derive",
+ "bitfield-struct",
  "bitflags",
  "derive_more",
  "getset",
@@ -313,6 +199,7 @@ dependencies = [
  "nalgebra",
  "num",
  "num_cpus",
+ "paste",
  "rayon",
  "seq-macro",
  "thiserror",
@@ -322,55 +209,16 @@ dependencies = [
 ]
 
 [[package]]
-name = "autd3-firmware-emulator"
-version = "31.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "34714b522512cc532cf2d7f3f3214f417a42c020d0a9c431f16862ba241f8d08"
-dependencies = [
- "autd3-driver 31.0.1",
- "bitfield-struct 0.10.1",
- "getset",
- "time",
- "zerocopy",
-]
-
-[[package]]
-name = "autd3-firmware-emulator"
-version = "33.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "87eaba297382c5dbf7de1a8889f33df8d07cc2b91e71dba7dac537aada301016"
-dependencies = [
- "autd3-driver 33.0.0",
- "bitfield-struct 0.11.0",
- "getset",
- "time",
- "zerocopy",
-]
-
-[[package]]
-name = "autd3-firmware-emulator"
-version = "34.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "43ccb82f30aec21712d685605565ba217d3396d85723e250b3861975398dc336"
-dependencies = [
- "autd3-core 34.0.0",
- "autd3-driver 34.0.0",
- "bitfield-struct 0.11.0",
- "getset",
- "time",
- "zerocopy",
-]
-
-[[package]]
 name = "autd3-link-soem"
-version = "34.0.0"
+version = "35.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "17b310a083fac380af8ffbcc9940a807a301617b5f6fe89081fc119aa78631e3"
+checksum = "be3c5328da77b9e75566a058f9698ff538c0e1f8d0b2c65577c0f7498822b68a"
 dependencies = [
  "anyhow",
- "autd3-core 34.0.0",
+ "autd3-core",
  "autd3-protobuf",
  "cc",
+ "core_affinity",
  "crossbeam-channel",
  "derive_more",
  "getset",
@@ -381,19 +229,19 @@ dependencies = [
  "thread-priority",
  "time",
  "tracing",
- "windows 0.61.3",
+ "windows",
  "zerocopy",
 ]
 
 [[package]]
 name = "autd3-protobuf"
-version = "34.0.0"
+version = "35.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9e59fbb166648519df69c7c87651469db1f2c50264343b2ef09a84a6b966d197"
+checksum = "cbad1e96c8d10e5b3681c0126247a78f2ed5d674cf3f026b754a0acf4d5e04af"
 dependencies = [
  "autd3",
- "autd3-core 34.0.0",
- "autd3-driver 34.0.0",
+ "autd3-core",
+ "autd3-driver",
  "prost",
  "thiserror",
  "tonic",
@@ -480,17 +328,6 @@ checksum = "5e764a1d40d510daf35e07be9eb06e75770908c27d411ee6c92109c9840eaaf7"
 
 [[package]]
 name = "bitfield-struct"
-version = "0.10.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2be5a46ba01b60005ae2c51a36a29cfe134bcacae2dd5cedcd4615fbaad1494b"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
-name = "bitfield-struct"
 version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d3ca019570363e800b05ad4fd890734f28ac7b72f563ad8a35079efb793616f8"
@@ -508,9 +345,9 @@ checksum = "1b8e56985ec62d17e9c1001dc89c88ecd7dc08e47eba5ec7c29c7b5eeecde967"
 
 [[package]]
 name = "bumpalo"
-version = "3.18.1"
+version = "3.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "793db76d6187cd04dff33004d8e6c9cc4e05cd330500379d2394209271b4aeee"
+checksum = "46c5e41b57b8bba42a04676d81cb89e9ee8e859a1a66f80a5a72e1cb76b34d43"
 
 [[package]]
 name = "bvh"
@@ -619,16 +456,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b05b61dc5112cbb17e4b6cd61790d9845d13888356391624cbe7e41efeac1e75"
 
 [[package]]
-name = "const_fn"
-version = "0.4.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2f8a2ca5ac02d09563609681103aada9e1777d54fc57a5acd7a41404f9c93b6e"
-
-[[package]]
 name = "core-foundation-sys"
 version = "0.8.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
+
+[[package]]
+name = "core_affinity"
+version = "0.8.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a034b3a7b624016c6e13f5df875747cc25f884156aad2abd12b6c46797971342"
+dependencies = [
+ "libc",
+ "num_cpus",
+ "winapi",
+]
 
 [[package]]
 name = "crossbeam-channel"
@@ -947,7 +789,7 @@ dependencies = [
  "js-sys",
  "log",
  "wasm-bindgen",
- "windows-core 0.61.2",
+ "windows-core",
 ]
 
 [[package]]
@@ -961,9 +803,9 @@ dependencies = [
 
 [[package]]
 name = "indexmap"
-version = "2.9.0"
+version = "2.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cea70ddb795996207ad57735b50c5982d8844f38ba9ee5f1aedcfb708a2aa11e"
+checksum = "fe4cd85333e22411419a0bcae1297d25e58c9443848b11dc6a86fefe8c78a661"
 dependencies = [
  "equivalent",
  "hashbrown",
@@ -1591,7 +1433,7 @@ dependencies = [
  "libc",
  "log",
  "rustversion",
- "windows 0.61.3",
+ "windows",
 ]
 
 [[package]]
@@ -1962,37 +1804,15 @@ checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
 
 [[package]]
 name = "windows"
-version = "0.60.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ddf874e74c7a99773e62b1c671427abf01a425e77c3d3fb9fb1e4883ea934529"
-dependencies = [
- "windows-collections 0.1.1",
- "windows-core 0.60.1",
- "windows-future 0.1.1",
- "windows-link",
- "windows-numerics 0.1.1",
-]
-
-[[package]]
-name = "windows"
 version = "0.61.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9babd3a767a4c1aef6900409f85f5d53ce2544ccdfaa86dad48c91782c6d6893"
 dependencies = [
- "windows-collections 0.2.0",
- "windows-core 0.61.2",
- "windows-future 0.2.1",
+ "windows-collections",
+ "windows-core",
+ "windows-future",
  "windows-link",
- "windows-numerics 0.2.0",
-]
-
-[[package]]
-name = "windows-collections"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5467f79cc1ba3f52ebb2ed41dbb459b8e7db636cc3429458d9a852e15bc24dec"
-dependencies = [
- "windows-core 0.60.1",
+ "windows-numerics",
 ]
 
 [[package]]
@@ -2001,20 +1821,7 @@ version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3beeceb5e5cfd9eb1d76b381630e82c4241ccd0d27f1a39ed41b2760b255c5e8"
 dependencies = [
- "windows-core 0.61.2",
-]
-
-[[package]]
-name = "windows-core"
-version = "0.60.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ca21a92a9cae9bf4ccae5cf8368dce0837100ddf6e6d57936749e85f152f6247"
-dependencies = [
- "windows-implement 0.59.0",
- "windows-interface",
- "windows-link",
- "windows-result",
- "windows-strings 0.3.1",
+ "windows-core",
 ]
 
 [[package]]
@@ -2023,21 +1830,11 @@ version = "0.61.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c0fdd3ddb90610c7638aa2b3a3ab2904fb9e5cdbecc643ddb3647212781c4ae3"
 dependencies = [
- "windows-implement 0.60.0",
+ "windows-implement",
  "windows-interface",
  "windows-link",
  "windows-result",
- "windows-strings 0.4.2",
-]
-
-[[package]]
-name = "windows-future"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a787db4595e7eb80239b74ce8babfb1363d8e343ab072f2ffe901400c03349f0"
-dependencies = [
- "windows-core 0.60.1",
- "windows-link",
+ "windows-strings",
 ]
 
 [[package]]
@@ -2046,20 +1843,9 @@ version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fc6a41e98427b19fe4b73c550f060b59fa592d7d686537eebf9385621bfbad8e"
 dependencies = [
- "windows-core 0.61.2",
+ "windows-core",
  "windows-link",
  "windows-threading",
-]
-
-[[package]]
-name = "windows-implement"
-version = "0.59.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "83577b051e2f49a058c308f17f273b570a6a758386fc291b5f6a934dd84e48c1"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
 ]
 
 [[package]]
@@ -2092,21 +1878,11 @@ checksum = "5e6ad25900d524eaabdbbb96d20b4311e1e7ae1699af4fb28c17ae66c80d798a"
 
 [[package]]
 name = "windows-numerics"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "005dea54e2f6499f2cee279b8f703b3cf3b5734a2d8d21867c8f44003182eeed"
-dependencies = [
- "windows-core 0.60.1",
- "windows-link",
-]
-
-[[package]]
-name = "windows-numerics"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9150af68066c4c5c07ddc0ce30421554771e528bde427614c61038bc2c92c2b1"
 dependencies = [
- "windows-core 0.61.2",
+ "windows-core",
  "windows-link",
 ]
 
@@ -2115,15 +1891,6 @@ name = "windows-result"
 version = "0.3.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "56f42bd332cc6c8eac5af113fc0c1fd6a8fd2aa08a0119358686e5160d0586c6"
-dependencies = [
- "windows-link",
-]
-
-[[package]]
-name = "windows-strings"
-version = "0.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "87fa48cc5d406560701792be122a10132491cff9d0aeb23583cc2dcafc847319"
 dependencies = [
  "windows-link",
 ]
