@@ -36,7 +36,7 @@ where
                     .expect("will never be `None`");
 
                 if !fields.is_empty() {
-                    write!(writer, "{{{}}}", fields)?;
+                    write!(writer, "{{{fields}}}")?;
                 }
                 write!(writer, ": ")?;
             }
