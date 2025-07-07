@@ -135,9 +135,9 @@ checksum = "1505bd5d3d116872e7271a6d4e16d81d0c8570876c8de68093a09ac269d8aac0"
 
 [[package]]
 name = "autd3"
-version = "35.0.0"
+version = "35.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6f670bfa7ea81d3e1f773bfb155736c29cdf7d35a8d7bed891218bae6f1cef7c"
+checksum = "96816918fa37b627359ffcee736df2f25199996eb0b4ff5aa68e176957861959"
 dependencies = [
  "autd3-core",
  "autd3-driver",
@@ -185,9 +185,9 @@ dependencies = [
 
 [[package]]
 name = "autd3-driver"
-version = "35.0.0"
+version = "35.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ca9d2d720198c6fad1b793f4a30c848b5ebabfcbc6d9f864aa1f7d22fa9c4dad"
+checksum = "17af752cda9690d7f0d2367d59603461d6c33246b2612a704015c736d8bf47b2"
 dependencies = [
  "autd3-core",
  "autd3-derive",
@@ -235,9 +235,9 @@ dependencies = [
 
 [[package]]
 name = "autd3-protobuf"
-version = "35.0.0"
+version = "35.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cbad1e96c8d10e5b3681c0126247a78f2ed5d674cf3f026b754a0acf4d5e04af"
+checksum = "c412013958090e76eea7682deabd9f02547b7de9fd2de093dcf7b47553ab04b0"
 dependencies = [
  "autd3",
  "autd3-core",
