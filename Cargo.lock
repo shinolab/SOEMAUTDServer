@@ -7,7 +7,7 @@ name = "SOEMAUTDServer"
 version = "35.0.0"
 dependencies = [
  "anyhow",
- "autd3-core",
+ "autd3-core 36.0.1",
  "autd3-link-soem",
  "autd3-protobuf",
  "chrono",
@@ -133,7 +133,7 @@ version = "35.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "96816918fa37b627359ffcee736df2f25199996eb0b4ff5aa68e176957861959"
 dependencies = [
- "autd3-core",
+ "autd3-core 35.0.1",
  "autd3-driver",
  "derive_more",
  "getset",
@@ -154,7 +154,7 @@ dependencies = [
  "bvh",
  "derive_more",
  "getset",
- "nalgebra",
+ "nalgebra 0.33.2",
  "num",
  "num_cpus",
  "paste",
@@ -165,6 +165,16 @@ dependencies = [
  "tokio",
  "tynm",
  "zerocopy",
+]
+
+[[package]]
+name = "autd3-core"
+version = "36.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "04a1ddc1f27c53159d946713ce16f14cfe70e7cf8a5411d56fa2c65dd0be167a"
+dependencies = [
+ "nalgebra 0.34.1",
+ "pastey",
 ]
 
 [[package]]
@@ -183,14 +193,14 @@ version = "35.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "17af752cda9690d7f0d2367d59603461d6c33246b2612a704015c736d8bf47b2"
 dependencies = [
- "autd3-core",
+ "autd3-core 35.0.1",
  "autd3-derive",
  "bitfield-struct",
  "bitflags",
  "derive_more",
  "getset",
  "itertools",
- "nalgebra",
+ "nalgebra 0.33.2",
  "num",
  "num_cpus",
  "paste",
@@ -209,7 +219,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c130741453264ab4ddaf9fe850df9b5ab218db73de4782520d9cd8906056f54c"
 dependencies = [
  "anyhow",
- "autd3-core",
+ "autd3-core 35.0.1",
  "autd3-protobuf",
  "cc",
  "core_affinity",
@@ -234,7 +244,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c412013958090e76eea7682deabd9f02547b7de9fd2de093dcf7b47553ab04b0"
 dependencies = [
  "autd3",
- "autd3-core",
+ "autd3-core 35.0.1",
  "autd3-driver",
  "prost",
  "thiserror",
@@ -351,7 +361,7 @@ checksum = "e4fd03539bf70239ca2190a58d28255ff4e8df537530d6a11828d953878e86c5"
 dependencies = [
  "approx",
  "log",
- "nalgebra",
+ "nalgebra 0.33.2",
  "num",
  "rand",
 ]
@@ -859,6 +869,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1171693293099992e19cddea4e8b849964e9846f4acee11b3948bcc337be8776"
 
 [[package]]
+name = "libm"
+version = "0.2.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f9fbbcab51052fe104eb5e5d351cf728d30a5be1fe14d9be8a3b097481fb97de"
+
+[[package]]
 name = "log"
 version = "0.4.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -925,6 +941,20 @@ dependencies = [
  "num-rational",
  "num-traits",
  "serde",
+ "simba",
+ "typenum",
+]
+
+[[package]]
+name = "nalgebra"
+version = "0.34.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c4d5b3eff5cd580f93da45e64715e8c20a3996342f1e466599cf7a267a0c2f5f"
+dependencies = [
+ "approx",
+ "num-complex",
+ "num-rational",
+ "num-traits",
  "simba",
  "typenum",
 ]
@@ -1048,6 +1078,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841"
 dependencies = [
  "autocfg",
+ "libm",
 ]
 
 [[package]]
@@ -1086,6 +1117,12 @@ name = "paste"
 version = "1.0.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a"
+
+[[package]]
+name = "pastey"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "35fb2e5f958ec131621fdd531e9fc186ed768cbe395337403ae56c17a74c68ec"
 
 [[package]]
 name = "percent-encoding"
