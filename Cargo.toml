@@ -16,7 +16,7 @@ tokio = { version = "1.47.1", features = ["macros", "rt-multi-thread"] }
 autd3-protobuf = { version = "35.0.0", features = ["async-trait"] }
 autd3-link-soem = { version = "35.0.1", features = ["async", "async-trait"] }
 autd3-core = { version = "35.0.1", features = ["sleep", "geometry"] }
-anyhow = "1.0.99"
+anyhow = "1.0.100"
 ctrlc = "3.4.7"
 tonic = "0.13.1"
 tracing = "0.1.41"
